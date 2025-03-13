@@ -21,7 +21,7 @@ class LoginVeiw extends StatelessWidget {
       appBar: AppBar(
         title: Text('Login'),
         backgroundColor: Colors.green[500],
-        
+        centerTitle:true,
         ),
       body:Container(
         padding: EdgeInsets.all(16),

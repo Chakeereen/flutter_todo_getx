@@ -1,20 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_getx/controllers/auth_controller.dart';
 import 'package:flutter_todo_getx/controllers/todo_controller.dart';
 import 'package:flutter_todo_getx/models/todo_model.dart';
 import 'package:flutter_todo_getx/views/add_todo_view.dart';
 import 'package:get/get.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   HomeView({super.key});
-  final TodoController todoController = Get.put(TodoController());
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final TodoController todoController = Get.put(TodoController());
+
+  final AuthController authController = AuthController();
+
+  @override
+   void initState() {
+    super.initState();
+    todoController.onInit(); // Ensure onInit is called every time HomeView is used
+  }
+
   Widget build(BuildContext context) {
+    todoController.fetchTodoList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Todo List', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.green[500],
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {
+            todoController.clearTodo();
+            authController.logout();
+          }, 
+          icon: Icon(Icons.logout))
+        ],
       ),
       body: Obx(() {
         return Column(
@@ -54,6 +76,8 @@ class HomeView extends StatelessWidget {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
+                              decoration: 
+                                todo.isDone ? TextDecoration.lineThrough : null,
                             ),
                           ),
                           subtitle: Text(
@@ -61,6 +85,8 @@ class HomeView extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey.shade600,
+                               decoration: 
+                                todo.isDone ? TextDecoration.lineThrough : null,
                             ),
                           ),
                           leading: Checkbox(
@@ -71,10 +97,15 @@ class HomeView extends StatelessWidget {
                           ),
                           trailing: IconButton(
                             onPressed: () {
+                             
+                              // todoController.deleteTodo(todo.docId ?? '');
                               todoController.deleteTodo(index);
                             },
                             icon: Icon(Icons.delete, color: Colors.red),
                           ),
+                          onTap: () {
+                            Get.to(AddTodoView(todo: todo));
+                          },
                         ),
                       ),
                     ),
@@ -93,39 +124,4 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
-
-//   // ถ้าไม่มีรายการ จะแสดงข้อความแจ้งเตือน
-//   Widget _buildEmptyState() {
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Icon(Icons.list_alt, size: 80, color: Colors.grey[400]),
-//           SizedBox(height: 10),
-//           Text(
-//             'ยังไม่มีรายการที่ต้องทำ',
-//             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey[600]),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//  // แสดง Dialog ยืนยันการลบ
-//   void _showDeleteDialog(BuildContext context, int index) {
-//         todoController.deleteTodo(index);
-//         Get.back();
-//     // Get.defaultDialog(
-//     //   title: "ลบรายการ",
-//     //   middleText: "คุณต้องการลบรายการนี้หรือไม่?",
-//     //   textConfirm: "ลบ",
-//     //   textCancel: "ยกเลิก",
-//     //   confirmTextColor: Colors.white,
-//     //   buttonColor: Colors.red,
-//     //   onConfirm: () {
-//     //     todoController.deleteTodo(index);
-//     //     Get.back();
-//     //   },
-//     // );
-//   }
 }

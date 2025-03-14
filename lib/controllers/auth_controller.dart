@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_todo_getx/views/home_view.dart';
+import 'package:flutter_todo_getx/views/login_veiw.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  
 
   var user = Rxn<User>();
+  
 
   @override
   void onInit() {
@@ -33,8 +36,19 @@ class AuthController extends GetxController {
         );
         Get.snackbar('สำเร็จ', 'ล็อกอินสำเร็จ');
         Get.off(HomeView());
+        
     } catch(e){
       Get.snackbar("ผิดพลาด", e.toString());
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+      Get.snackbar("สำเร็จ", "ออกจากระบบสำเร็จ");
+      Get.off(LoginVeiw());
+    } catch (e) {
+      Get.snackbar('ผิดพลาด', e.toString());
     }
   }
 }  

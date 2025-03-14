@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_getx/services/storage_service.dart';
+//import 'package:flutter_todo_getx/services/storage_service.dart';
 import 'package:flutter_todo_getx/views/login_veiw.dart';
 //import 'package:flutter_todo_getx/views/register_view.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -12,7 +12,7 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  await StorageService().init();
+  // await StorageService().init();
   
  
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
 import 'package:flutter_todo_getx/controllers/auth_controller.dart';
+import 'package:flutter_todo_getx/controllers/todo_controller.dart';
 import 'package:flutter_todo_getx/views/register_view.dart';
 import 'package:flutter_todo_getx/widgets/app_text_field.dart';
 import 'package:get/get.dart';
@@ -14,8 +15,9 @@ class LoginVeiw extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   AuthController authController = Get.put(AuthController());
-
+  TodoController todoController = TodoController();
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -39,6 +41,7 @@ class LoginVeiw extends StatelessWidget {
                   return;
                 }
               authController.login(emailController.text, passwordController.text);
+              
             }, child: Text('Login')),
             SizedBox(height: 16),
             ElevatedButton(onPressed: () {

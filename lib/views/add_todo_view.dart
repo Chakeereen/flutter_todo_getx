@@ -1,18 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_getx/controllers/todo_controller.dart';
+import 'package:flutter_todo_getx/models/todo_model.dart';
 import 'package:get/get.dart';
 
-class AddTodoView extends StatelessWidget {
-  AddTodoView({super.key});
+class AddTodoView extends StatefulWidget {
+  AddTodoView({super.key,this.todo});
+  TodoModel? todo;
+
+  @override
+  State<AddTodoView> createState() => _AddTodoViewState();
+}
+
+class _AddTodoViewState extends State<AddTodoView> {
   final TodoController todoController = Get.put(TodoController());
+
   final TextEditingController titleController = TextEditingController();
+
   final TextEditingController subtitleController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.todo != null) {
+      titleController.text = widget.todo!.title;
+      subtitleController.text = widget.todo!.subtitle;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('เพิ่มรายการ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        title: Text( widget.todo == null ?  'เพิ่มรายการ' : 'แก้ไข', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.green,
         centerTitle: true,
       ),
@@ -31,20 +50,39 @@ class AddTodoView extends StatelessWidget {
               width: double.infinity, // ปุ่มเต็มความกว้าง
               child: ElevatedButton(
                 onPressed: () {
-                  if (titleController.text.isNotEmpty) {
-                    todoController.addTodo(titleController.text, subtitleController.text);
-                    Get.back();
-                    _showSnackbar();
+                  
+                  if(widget.todo == null){
+                      
+                      todoController.addTodo(titleController.text, subtitleController.text);
+                      todoController.clearTodo();
+                      
+                      Get.back();
+                  
+                      _showSnackbar();
+                    
                   }
+                  else {
+                      if(titleController.text.isEmpty) return; 
+                      widget.todo!.title = titleController.text;
+                      widget.todo!.subtitle = subtitleController.text;
+                      todoController.updateTodo(widget.todo!);
+                      todoController.clearTodo();
+                      
+                      Get.back();
+                  
+                      _showSnackbar();
+                    
+                  }
+                  
                 },
-                style: ElevatedButton.styleFrom(
+                style: ElevatedButton.styleFrom( 
                   backgroundColor: Colors.green,
                   padding: EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text('เพิ่มรายการ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                child: Text('บันทึก', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -84,7 +122,7 @@ class AddTodoView extends StatelessWidget {
       icon: Icon(Icons.check_circle, color: Colors.white),
       borderRadius: 10,
       margin: EdgeInsets.all(10),
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 1),
     );
   }
 }

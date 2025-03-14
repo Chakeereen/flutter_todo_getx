@@ -39,7 +39,12 @@ class StorageService {
     String docId,
     Map<String, dynamic> updates,
   ) async {
-    await firestore.collection(key).doc(docId).update(updates);
+    try {
+      await firestore.collection(key).doc(docId).update(updates);
+    } catch (e) {
+      print('StorageService.delete: $e');
+    }
+    
   }
   
 

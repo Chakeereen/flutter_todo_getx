@@ -13,15 +13,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final TodoController todoController = Get.put(TodoController());
+  TodoController todoController = Get.put(TodoController());
 
-  final AuthController authController = AuthController();
+  AuthController authController = Get.put(AuthController());
 
   @override
-   void initState() {
-    super.initState();
-    todoController.fetchTodoList(); // Ensure onInit is called every time HomeView is used
-  }
 
   Widget build(BuildContext context) {
     todoController.fetchTodoList();
@@ -92,13 +88,14 @@ class _HomeViewState extends State<HomeView> {
                           leading: Checkbox(
                             value: todo.isDone,
                             onChanged: (bool? newValue) {
-                              todoController.toggletodo(index);
+                              todoController.toggleTodo(index);
                             },
                           ),
                           trailing: IconButton(
                             onPressed: () async{
                               print(todo.toJson());
                              todoController.deleteTodo(todo.docId ?? '');
+                             
                               
                             },
                             icon: Icon(Icons.delete, color: Colors.red),

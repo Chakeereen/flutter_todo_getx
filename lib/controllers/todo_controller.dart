@@ -38,22 +38,22 @@ class TodoController extends GetxController{
       );
       todoList.add(todo);
       storageService.write('todoList', todo.toJson());
+      fetchTodoList();
   }
- 
-  void toggletodo(int index) {
-    todoList[index].isDone = !todoList[index].isDone;
-    todoList.refresh();
-    storageService.update('todoList', todoList[index].docId ?? '',{
-      'isDone': todoList[index].isDone,
-    });
- 
-  }
-
-  Future<void> updateTodo(TodoModel todo) async{
+   Future<void> updateTodo(TodoModel todo) async {
     todoList.firstWhere((todo) => todo.docId == todo.docId).title;
     todoList.firstWhere((todo) => todo.docId == todo.docId).subtitle;
     todoList.refresh();
-    await storageService.update('todoList',todo.docId?? '',todo.toJson());
+    await storageService.update('todoList', todo.docId ?? '', todo.toJson());
+  }
+
+  void toggleTodo(int index) {
+    todoList[index].isDone = !todoList[index].isDone;
+    todoList.refresh();
+    storageService.update('todoList', todoList[index].docId ?? '', {
+      'isDone': todoList[index].isDone,
+    });
+    fetchTodoList();
   }
  
   // void deleteTodo( int index) {

@@ -3,6 +3,7 @@ import 'package:flutter_todo_getx/controllers/todo_controller.dart';
 import 'package:flutter_todo_getx/models/todo_model.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class AddTodoView extends StatefulWidget {
   AddTodoView({super.key,this.todo});
   TodoModel? todo;
@@ -54,7 +55,7 @@ class _AddTodoViewState extends State<AddTodoView> {
                   if(widget.todo == null){
                       
                       todoController.addTodo(titleController.text, subtitleController.text);
-                      todoController.clearTodo();
+                     
                       
                       Get.back();
                   
@@ -66,7 +67,7 @@ class _AddTodoViewState extends State<AddTodoView> {
                       widget.todo!.title = titleController.text;
                       widget.todo!.subtitle = subtitleController.text;
                       todoController.updateTodo(widget.todo!);
-                     todoController.clearTodo();
+                      
                       
                       Get.back();
                   

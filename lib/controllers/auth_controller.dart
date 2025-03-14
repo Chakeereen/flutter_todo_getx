@@ -23,6 +23,7 @@ class AuthController extends GetxController {
           password: password,
       );
       Get.snackbar('สำเร็จ', 'สมัครสมาชิกสำเร็จ');
+      Get.to(LoginVeiw());
     } catch(e) {
       Get.snackbar('ผิดพลาด', e.toString());
     }

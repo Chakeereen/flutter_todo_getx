@@ -56,17 +56,19 @@ class TodoController extends GetxController{
     await storageService.update('todoList',todo.docId?? '',todo.toJson());
   }
  
-  void deleteTodo( int index) {
-    var id = todoList.removeAt(index).docId.toString();
-    storageService.delete('todoList', id);
-    
-  }
-
-  // void deleteTodo( String docId) {
-  //   todoList.removeWhere((todo) => todo.docId == docId);
-  //   storageService.delete('todoList', docId);
+  // void deleteTodo( int index) {
+  //   var id = todoList.removeAt(index).docId.toString();
+  //   storageService.delete('todoList', id);
     
   // }
+
+  void deleteTodo( String docId) {
+    todoList.removeWhere((todo) => todo.docId == docId);
+    storageService.delete('todoList', docId);
+    fetchTodoList();
+    
+    
+  }
 
   void clearTodo() {
     todoList.clear();

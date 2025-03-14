@@ -66,7 +66,7 @@ class _AddTodoViewState extends State<AddTodoView> {
                       widget.todo!.title = titleController.text;
                       widget.todo!.subtitle = subtitleController.text;
                       todoController.updateTodo(widget.todo!);
-                      todoController.clearTodo();
+                     todoController.clearTodo();
                       
                       Get.back();
                   

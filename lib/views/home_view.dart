@@ -20,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
   @override
    void initState() {
     super.initState();
-    todoController.onInit(); // Ensure onInit is called every time HomeView is used
+    todoController.fetchTodoList(); // Ensure onInit is called every time HomeView is used
   }
 
   Widget build(BuildContext context) {
@@ -96,10 +96,10 @@ class _HomeViewState extends State<HomeView> {
                             },
                           ),
                           trailing: IconButton(
-                            onPressed: () {
-                             
-                              // todoController.deleteTodo(todo.docId ?? '');
-                              todoController.deleteTodo(index);
+                            onPressed: () async{
+                              print(todo.toJson());
+                             todoController.deleteTodo(todo.docId ?? '');
+                              
                             },
                             icon: Icon(Icons.delete, color: Colors.red),
                           ),
